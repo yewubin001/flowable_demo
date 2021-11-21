@@ -1,0 +1,34 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "cn.magfin.flowabledemo"
+    },
+    "jhipsterVersion": "5.8.2",
+    "applicationType": "microservice",
+    "baseName": "flowabledemo",
+    "packageName": "cn.magfin.flowabledemo",
+    "packageFolder": "cn/magfin/flowabledemo",
+    "serverPort": "8081",
+    "authenticationType": "jwt",
+    "cacheProvider": "no",
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Memory",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "gradle",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "NmQzOWZjZTZmYjYyYTQ5ZDI4YTJkYzUzODVkYjgzMTc0ZTViMjI2NGRhZGNjYWE0NzFmZWM4ZjBjMWRkNDZmY2MyYjllOGU1OTFkMzQ5YzBjNjA5NjBmZjJjODk1YjljYzZhNzY2OWNlOWQwOTkzZDE2OTIyYzRiZTJiZDIzNjk=",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false,
+    "clientPackageManager": "npm",
+    "skipClient": true,
+    "skipUserManagement": true
+  }
+}

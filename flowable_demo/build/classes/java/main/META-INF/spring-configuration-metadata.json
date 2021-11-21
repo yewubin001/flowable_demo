@@ -1,0 +1,17 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "cn.magfin.flowabledemo.config.ApplicationProperties",
+      "name": "application",
+      "type": "cn.magfin.flowabledemo.config.ApplicationProperties"
+    },
+    {
+      "sourceType": "cn.magfin.flowabledemo.config.CloudDatabaseConfiguration",
+      "name": "spring.datasource.hikari",
+      "sourceMethod": "dataSource()",
+      "type": "javax.sql.DataSource"
+    }
+  ],
+  "properties": []
+}

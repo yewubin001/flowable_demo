@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef">
+  <process id="black_list_remove" name="不宜贷款户移除" isExecutable="true">
+    <documentation>不宜贷款户移除申请</documentation>
+    <startEvent id="black_list_start_node" name="流程开始" flowable:formFieldValidation="true"></startEvent>
+    <userTask id="black_list_apply_node" name="不宜贷款客户移除申请" flowable:assignee="${user_id}" flowable:formFieldValidation="true">
+      <extensionElements>
+        <flowable:taskListener event="create" delegateExpression="${flowUserTaskCreateListener}"></flowable:taskListener>
+        <flowable:taskListener event="complete" delegateExpression="${flowUserTaskCompleteListener}"></flowable:taskListener>
+        <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="sid-98BDA7FA-E54B-4E9A-BB7E-042DA8B383AC" sourceRef="black_list_start_node" targetRef="black_list_apply_node"></sequenceFlow>
+    <userTask id="black_list_audit_node" name="不宜贷款客户移除审批" flowable:candidateGroups="MARKETING_DEPT#FLOW_ROLE_BIZ_AUDIT" flowable:formFieldValidation="true">
+      <extensionElements>
+        <flowable:taskListener event="create" delegateExpression="${flowUserTaskCreateListener}"></flowable:taskListener>
+        <flowable:taskListener event="complete" delegateExpression="${flowUserTaskCompleteListener}"></flowable:taskListener>
+      </extensionElements>
+    </userTask>
+    <endEvent id="black_list_end_r_node" name="拒绝">
+      <extensionElements>
+        <flowable:executionListener event="end" delegateExpression="${flowAuditFinalResultListener}"></flowable:executionListener>
+      </extensionElements>
+    </endEvent>
+    <endEvent id="black_list_end_p_node" name="通过">
+      <extensionElements>
+        <flowable:executionListener event="end" delegateExpression="${flowAuditFinalResultListener}"></flowable:executionListener>
+      </extensionElements>
+    </endEvent>
+    <sequenceFlow id="sid-ED543C6F-8E3F-4E5D-9CEA-B37ED4D7A84B" name="拒绝" sourceRef="black_list_audit_node" targetRef="black_list_end_r_node">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${auditResult == "REJECTED"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-9E91E0CC-80E6-4075-A414-12C463C91FE7" name="通过
+" sourceRef="black_list_audit_node" targetRef="black_list_end_p_node">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${auditResult == "APPROVED"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-99F121AD-AF6B-4C8D-BCF5-30472D463A6C" name="驳回" sourceRef="black_list_audit_node" targetRef="black_list_apply_node">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${auditResult=="ROLL_BACK"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-5B890679-49F8-4B19-B0FC-8115DAA1AB3A" name="申请" sourceRef="black_list_apply_node" targetRef="black_list_audit_node"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_black_list_remove">
+    <bpmndi:BPMNPlane bpmnElement="black_list_remove" id="BPMNPlane_black_list_remove">
+      <bpmndi:BPMNShape bpmnElement="black_list_start_node" id="BPMNShape_black_list_start_node">
+        <omgdc:Bounds height="30.0" width="30.0" x="150.0" y="142.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="black_list_apply_node" id="BPMNShape_black_list_apply_node">
+        <omgdc:Bounds height="74.0" width="161.0" x="270.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="black_list_audit_node" id="BPMNShape_black_list_audit_node">
+        <omgdc:Bounds height="78.0" width="164.5" x="525.0" y="116.5"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="black_list_end_r_node" id="BPMNShape_black_list_end_r_node">
+        <omgdc:Bounds height="28.0" width="28.0" x="765.0" y="225.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="black_list_end_p_node" id="BPMNShape_black_list_end_p_node">
+        <omgdc:Bounds height="28.0" width="28.0" x="765.0" y="45.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-99F121AD-AF6B-4C8D-BCF5-30472D463A6C" id="BPMNEdge_sid-99F121AD-AF6B-4C8D-BCF5-30472D463A6C">
+        <omgdi:waypoint x="566.125" y="116.5"></omgdi:waypoint>
+        <omgdi:waypoint x="566.125" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.75" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.75" y="120.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-98BDA7FA-E54B-4E9A-BB7E-042DA8B383AC" id="BPMNEdge_sid-98BDA7FA-E54B-4E9A-BB7E-042DA8B383AC">
+        <omgdi:waypoint x="179.94999946880918" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-5B890679-49F8-4B19-B0FC-8115DAA1AB3A" id="BPMNEdge_sid-5B890679-49F8-4B19-B0FC-8115DAA1AB3A">
+        <omgdi:waypoint x="390.75" y="193.95"></omgdi:waypoint>
+        <omgdi:waypoint x="390.75" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="566.125" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="566.125" y="194.45"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-ED543C6F-8E3F-4E5D-9CEA-B37ED4D7A84B" id="BPMNEdge_sid-ED543C6F-8E3F-4E5D-9CEA-B37ED4D7A84B">
+        <omgdi:waypoint x="648.375" y="194.45"></omgdi:waypoint>
+        <omgdi:waypoint x="648.375" y="244.0"></omgdi:waypoint>
+        <omgdi:waypoint x="765.0" y="244.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-9E91E0CC-80E6-4075-A414-12C463C91FE7" id="BPMNEdge_sid-9E91E0CC-80E6-4075-A414-12C463C91FE7">
+        <omgdi:waypoint x="648.375" y="116.5"></omgdi:waypoint>
+        <omgdi:waypoint x="648.375" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="765.0" y="65.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
